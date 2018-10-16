@@ -7,21 +7,41 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Deck.h"
+
 #import "Card.h"
+#import "Deck.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Object that represents a game of matching cards.
 @interface CardMatchingGame : NSObject
 
-// designated initalizer
-- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck;
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with the given \c count and \c deck.
+/// Creates an array of \c count cards, using \c drawRandomCard of \c deck.
+- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck
+    NS_DESIGNATED_INITIALIZER;
+
+/// Marks the card in the given \c index as chosen. perform \c match if needed, updates score and
+/// description accordingly.
 - (void)chooseCardAtIndex:(NSUInteger)index;
+
+/// Returns the card at the given \c index.
 - (Card *)cardAtIndex:(NSUInteger)index;
-- (void)updateCurrentMatchMode:(int)matchMode;
+
+/// Updates the number of cards involved in each game match.
+- (void)updateCurrentNumCardMatch:(int)numCardMode;
+
+/// Returns a string that describes the current state.
 - (NSString *)getCurrentDescription;
 
-@property (nonatomic, readonly) NSInteger score;
+/// Returns an array of the current chosen cards.
+- (NSMutableArray<Card *> *)getCurrentChosenCards;
+
+/// The current score of the game.
+@property (readonly, nonatomic) NSInteger score;
+
 @end
 
 NS_ASSUME_NONNULL_END

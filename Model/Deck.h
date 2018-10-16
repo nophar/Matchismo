@@ -7,16 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "Card.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Object that represents a deck of cards.
 @interface Deck : NSObject
 
--(void)addCard:(Card*)card atTop:(BOOL)atTop;
--(void)addCard:(Card*)card;
+/// Adds a card to the deck, at the top if \c atTop is \c True.
+- (void)addCard:(Card*)card atTop:(BOOL)atTop;
 
--(Card *)drawRandomCard;
+/// Adds a card to the deck.
+- (void)addCard:(Card*)card;
+
+/// Returns a random card from the deck's cards.
+- (Card *)drawRandomCard;
 
 @end
 

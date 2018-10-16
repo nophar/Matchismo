@@ -1,18 +1,17 @@
 //
-//  PlayingCardDeck.h
+//  SetCardDeck.h
 //  Matchismo
 //
-//  Created by Nophar Sarel on 08/10/2018.
+//  Created by Nophar Sarel on 14/10/2018.
 //  Copyright © 2018 Lightricks. All rights reserved.
 //
-
 
 #import "Deck.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// \c Deck of Playing Cards.
-@interface PlayingCardDeck : Deck
+/// \c Deck of Set Cards.
+@interface SetCardDeck : Deck
 
 @end
 
