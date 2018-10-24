@@ -22,42 +22,6 @@
   return nil;
 }
 
-+ (NSArray *)validSymbols {
-  return @[@"▲",@"●",@"■"];
-}
-
-- (void)setSymbol:(NSString *)symbol {
-  if ([[SetCard validSymbols] containsObject:symbol])
-    _symbol = symbol;
-}
-
-- (void)setNumber:(NSInteger)number {
-  if (number <= [SetCard maxNumber])
-    _number = number;
-}
-
-- (void)setColor:(NSString *)color {
-  if ([[SetCard validColors] containsObject:color])
-    _color = color;
-}
-
-- (void)setShading:(NSString *)shading {
-  if ([[SetCard validShadings] containsObject:shading])
-    _shading = shading;
-}
-
-- (NSString *)symbol {
-  return _symbol ? _symbol : @"?";
-}
-
-- (NSString *)color {
-  return _color ? _color : @"?";
-}
-
-- (NSString *)shading {
-  return _shading ? _shading : @"?";
-}
-
 #pragma mark -
 #pragma mark Class methods
 #pragma mark -
@@ -66,16 +30,32 @@
   return [[self validNumbers] count];
 }
 
+#define SQUIGGLE 1
+#define DAIMOND 2
+#define OVAL 3
+
++ (NSArray *)validSymbols {
+  return @[@SQUIGGLE, @DAIMOND, @OVAL];
+}
+
 + (NSArray *)validNumbers {
   return @[@1, @2, @3];
 }
 
+#define RED 1
+#define GREEN 2
+#define PURPLE 3
+
 + (NSArray *)validColors {
-  return @[@"Red", @"Green", @"Purple"];
+  return @[@RED, @GREEN, @PURPLE];
 }
 
+#define SOLID 1
+#define STRIPED 2
+#define OPEN 3
+
 + (NSArray *)validShadings {
-  return @[@"Solid", @"Striped", @"Open"];
+  return @[@SOLID, @STRIPED, @OPEN];
 }
 
 #pragma mark -
@@ -98,15 +78,15 @@ static const int kNumOfOtherCards = 2;
   int sameSymbolCounter = 0;
   int differentSymbolCounter = 0;
   for (SetCard *otherCard in otherCards) {
-    if ([self.symbol isEqualToString:otherCard.symbol])
+    if (self.symbol == otherCard.symbol)
       sameSymbolCounter++;
     else
       differentSymbolCounter++;
   }
   if (sameSymbolCounter == kNumOfOtherCards)
     return true;
-  else if (differentSymbolCounter == kNumOfOtherCards && ![otherCards[0].symbol
-      isEqualToString:otherCards[1].symbol])
+  else if (differentSymbolCounter == kNumOfOtherCards && otherCards[0].symbol !=
+           otherCards[1].symbol)
     return true;
   return false;
 }
@@ -115,15 +95,14 @@ static const int kNumOfOtherCards = 2;
   int sameColorCounter = 0;
   int differentColorCounter = 0;
   for (SetCard *otherCard in otherCards) {
-    if ([self.color isEqualToString:otherCard.color])
+    if (self.color==otherCard.color)
       sameColorCounter++;
     else
       differentColorCounter++;
   }
   if (sameColorCounter == kNumOfOtherCards)
     return true;
-  else if (differentColorCounter == kNumOfOtherCards && ![otherCards[0].color
-      isEqualToString:otherCards[1].color])
+  else if (differentColorCounter == kNumOfOtherCards && otherCards[0].color != otherCards[1].color)
     return true;
   return false;
 }
@@ -132,15 +111,15 @@ static const int kNumOfOtherCards = 2;
   int sameShadingCounter = 0;
   int differentShadingCounter = 0;
   for (SetCard *otherCard in otherCards) {
-    if ([self.shading isEqualToString:otherCard.shading])
+    if (self.shading==otherCard.shading)
       sameShadingCounter++;
     else
       differentShadingCounter++;
   }
   if (sameShadingCounter == kNumOfOtherCards)
     return true;
-  else if (differentShadingCounter == kNumOfOtherCards && ![otherCards[0].shading
-      isEqualToString:otherCards[1].shading])
+  else if (differentShadingCounter == kNumOfOtherCards && otherCards[0].shading !=
+           otherCards[1].shading)
     return true;
   return false;
 }

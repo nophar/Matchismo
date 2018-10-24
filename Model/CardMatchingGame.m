@@ -21,17 +21,17 @@ NS_ASSUME_NONNULL_BEGIN
 // Number of cards involved in each game match.
 @property (nonatomic) int numCardsMatch;
 
-// A string that describes the current state.
-@property (nonatomic,strong) NSString *currentDescription;
+// Current number of cards in the game.
+@property (nonatomic) int numCardsOnDeck;
 
-//An array of the current chosen cards.
-@property (nonatomic,strong) NSMutableArray<Card *> *currentChosenCards;
+// The \c Deck of the game.
+@property (nonatomic) Deck *gameDeck;
 
 @end
 
 @implementation CardMatchingGame
 
-- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck {
+- (instancetype)initWithCardCount:(int)count usingDeck:(Deck *)deck {
   if (self = [super init]) {
     for (int i = 0; i < count; i++) {
       Card *card = [deck drawRandomCard];
@@ -43,9 +43,9 @@ NS_ASSUME_NONNULL_BEGIN
       }
     }
   }
+  self.gameDeck = deck;
   self.score = 0;
-  self.currentChosenCards = [[NSMutableArray alloc] init];
-  self.currentDescription = @"";
+  self.numCardsOnDeck = count;
   return self;
 }
 
@@ -55,48 +55,56 @@ NS_ASSUME_NONNULL_BEGIN
   return _cards;
 }
 
-- (NSString *)getCurrentDescription {
-  return self.currentDescription;
+- (int)getCurrentCardsNumber {
+  return self.numCardsOnDeck;
 }
 
-- (NSMutableArray<Card *> *)getCurrentChosenCards {
-  return self.currentChosenCards;
+- (void)setCurrentCardsNumber:(int)numCardsOnDeck {
+  self.numCardsOnDeck = numCardsOnDeck;
 }
 
 - (Card *)cardAtIndex:(NSUInteger)index {
   return (index<self.cards.count) ? self.cards[index] : nil;
 }
 
-static const int kMismatchPenalty = 2;
-static const int kMatchBonus = 4;
-static const int kCostToChoose = 1;
-
 - (void)updateCurrentNumCardMatch:(int)numCardMode {
   self.numCardsMatch = numCardMode;
+}
+
+- (NSArray<Card *> *)addCards:(int)numOfCardsToAdd {
+  NSMutableArray<Card *> *newCards = [[NSMutableArray alloc] init];
+  for (int i = 0; i < numOfCardsToAdd; i++) {
+    Card *card = [self.gameDeck drawRandomCard];
+    if (card) {
+      [self.cards addObject:card];
+      [newCards addObject:card];
+    }
+  }
+  return newCards;
 }
 
 # pragma mark -
 # pragma mark Choose card
 # pragma mark -
 
+static const int kMismatchPenalty = 2;
+static const int kMatchBonus = 4;
+static const int kCostToChoose = 1;
+
 - (void)chooseCardAtIndex:(NSUInteger)index {
-  self.currentChosenCards = [[NSMutableArray alloc] init];
-  self.currentDescription = @"";
   Card *card = [self cardAtIndex:index];
   if (card.matched)
     return;
   if (card.chosen)
-    [self dechooseCard:card];
+    card.chosen = NO;
   else { // match against other chosen cards
     NSMutableArray<Card *> *chosenCards = [self getOtherChosenCards];
-    self.currentChosenCards = chosenCards;
     if (chosenCards.count < (self.numCardsMatch - 1))
       [chosenCards firstObject].chosen = YES;
     else
-      [self calculateScoreAndUpdatingDescription:chosenCards currentCard:card];
+      [self calculateScore:chosenCards currentCard:card];
     self.score -= kCostToChoose;
     card.chosen = YES;
-    [self.currentChosenCards addObject:card];
   }
 }
 
@@ -109,17 +117,7 @@ static const int kCostToChoose = 1;
   return chosenCards;
 }
 
-- (void)dechooseCard:(Card *)card {
-  card.chosen = NO;
-  for (Card *otherCard in self.cards) {
-    if (otherCard.chosen && !otherCard.matched)
-      self.currentDescription = [self.currentDescription
-          stringByAppendingString:otherCard.contents];
-  }
-}
-
-- (void)calculateScoreAndUpdatingDescription:(NSMutableArray<Card *> *)chosenCards
-                                 currentCard:(Card *)card{
+- (void)calculateScore:(NSMutableArray<Card *> *)chosenCards currentCard:(Card *)card{
   int matchScore = [card match:chosenCards];
   if (matchScore) {
     self.score += matchScore * kMatchBonus;
@@ -127,15 +125,12 @@ static const int kCostToChoose = 1;
       otherCard.matched = YES;
     }
     card.matched = YES;
-    self.currentDescription = [NSString stringWithFormat:@" do match! %d points!",
-        matchScore * kMatchBonus];
   }
   else {
     self.score -= kMismatchPenalty;
     for (Card *otherCard in chosenCards) {
       otherCard.chosen = NO;
     }
-    self.currentDescription = @" don't match! 2 points penalty!";
   }
 }
 

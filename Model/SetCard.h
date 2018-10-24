@@ -26,13 +26,13 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSUInteger)maxNumber;
 
 /// The symbol of the card.
-@property (strong, nonatomic) NSString *symbol;
+@property (nonatomic) NSInteger symbol;
 
 /// A string presentation of the color of the card.
-@property (strong, nonatomic) NSString *color;
+@property (nonatomic) NSInteger color;
 
 /// A string presentation of the shading of the card.
-@property (strong, nonatomic) NSString *shading;
+@property (nonatomic) NSInteger shading;
 
 /// The number of symbols of the card.
 @property (nonatomic) NSInteger number;

@@ -1,46 +1,42 @@
 //
-//  PlayingCardViewController.m
+//  PlayingCardController.m
 //  Matchismo
 //
-//  Created by Nophar Sarel on 14/10/2018.
+//  Created by Nophar Sarel on 17/10/2018.
 //  Copyright © 2018 Lightricks. All rights reserved.
 //
 
 #import "PlayingCardViewController.h"
+#import "PlayingCardView.h"
 
-#import "PlayingCardDeck.h"
 
 @interface PlayingCardViewController ()
+
+
 @end
 
 @implementation PlayingCardViewController
 
-#pragma mark -
-#pragma mark CardGameViewController
-#pragma mark -
-
-- (Deck *)createDeck {
-  return [[PlayingCardDeck alloc] init];
+- (IBAction)tapGesture:(UITapGestureRecognizer *)sender {
+//  self.playingCardView.faceUp = !self.playingCardView.faceUp;
 }
 
-static const int kNumOfCardMatchPlayingCard = 2;
-
-- (int)getCurrentNumCardMatch {
-  return kNumOfCardMatchPlayingCard;
+- (void)viewDidLoad {
+  [super viewDidLoad];
+  
+//  self.playingCardView.suit = @"♥️";
+//  self.playingCardView.rank = 13;
+//  self.playingCardView.faceUp = true;
 }
 
-- (NSMutableAttributedString *)titleForCard:(Card *)card {
-  NSMutableAttributedString *string = [NSMutableAttributedString alloc];
-  return card.chosen ? [string initWithString:card.contents] : [string initWithString:@""];
-}
+/*
+#pragma mark - Navigation
 
-- (NSMutableAttributedString *)titleForCardDescription:(Card *)card {
-  NSMutableAttributedString *string = [NSMutableAttributedString alloc];
-  return [string initWithString:card.contents];
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
 }
-
-- (UIImage *)backgroundImageForCard:(Card *)card {
-  return [UIImage imageNamed:card.chosen ? @"cardfront" : @"cardback"];
-}
+*/
 
 @end

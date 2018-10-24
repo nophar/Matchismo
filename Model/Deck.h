@@ -24,6 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a random card from the deck's cards.
 - (Card *)drawRandomCard;
 
+/// When the cards are over, creates the Deck's cards again.
+- (void)createDeck;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -19,6 +19,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation Deck
 
+- (instancetype)init {
+  if (self = [super init]) {
+    [self createDeck];
+  }
+  return self;
+}
+
 - (NSMutableArray *)cards {
   if (!_cards) _cards = [[NSMutableArray alloc] init];
   return _cards;
@@ -35,13 +42,16 @@ NS_ASSUME_NONNULL_BEGIN
   [self addCard:card atTop:NO];
 }
 
+- (void)createDeck {
+}
+
 - (Card *)drawRandomCard {
   Card *randomCard = nil;
-  if ([self.cards count]) {
-    unsigned index = arc4random() % [self.cards count];
-    randomCard = self.cards[index];
-    [self.cards removeObjectAtIndex:index];
-  }
+  if (![self.cards count])
+    [self createDeck];
+  unsigned index = arc4random() % [self.cards count];
+  randomCard = self.cards[index];
+  [self.cards removeObjectAtIndex:index];
   return randomCard;
 }
 

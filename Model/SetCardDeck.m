@@ -12,24 +12,27 @@
 
 @implementation SetCardDeck
 
-- (instancetype)init {
-  if (self = [super init]) {
-    for (NSString *symbol in [SetCard validSymbols]) {
-      for (NSUInteger number = 1; number <= [SetCard maxNumber]; number++) {
-        for (NSString *color in [SetCard validColors]) {
-          for (NSString *shading in [SetCard validShadings]) {
-            SetCard *card = [[SetCard alloc] init];
-            card.symbol = symbol;
-            card.number = number;
-            card.color = color;
-            card.shading = shading;
-            [self addCard:card];
-          }
+- (void)createDeck {
+  NSUInteger numOfValidSymbols = [[SetCard validSymbols] count];
+  NSUInteger numOfValidColors = [[SetCard validColors] count];
+  NSUInteger numOfValidShadings = [[SetCard validShadings] count];
+  NSUInteger numOfValidNumbers = [SetCard maxNumber];
+  
+  for (int symbol = 1; symbol <= numOfValidSymbols; symbol++) {
+    for (int number = 1; number <= numOfValidNumbers; number++) {
+      for (int color = 1; color <= numOfValidColors; color++) {
+        for (int shading = 1; shading <= numOfValidShadings; shading++) {
+          SetCard *card = [[SetCard alloc] init];
+          card.symbol = symbol;
+          card.number = number;
+          card.color = color;
+          card.shading = shading;
+          [self addCard:card];
         }
       }
     }
   }
-  return self;
 }
+
 
 @end

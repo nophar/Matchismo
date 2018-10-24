@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// A Controller of a Set game.
-@interface SetCardViewController : CardGameViewController
+@interface SetCardGameViewController : CardGameViewController
 
 @end
 

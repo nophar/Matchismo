@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes with the given \c count and \c deck.
 /// Creates an array of \c count cards, using \c drawRandomCard of \c deck.
-- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck
+- (instancetype)initWithCardCount:(int)count usingDeck:(Deck *)deck
     NS_DESIGNATED_INITIALIZER;
 
 /// Marks the card in the given \c index as chosen. perform \c match if needed, updates score and
@@ -33,11 +33,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Updates the number of cards involved in each game match.
 - (void)updateCurrentNumCardMatch:(int)numCardMode;
 
-/// Returns a string that describes the current state.
-- (NSString *)getCurrentDescription;
+/// Returns the current number of cards in the deck.
+- (int)getCurrentCardsNumber;
 
-/// Returns an array of the current chosen cards.
-- (NSMutableArray<Card *> *)getCurrentChosenCards;
+/// Sets the current number of cards in the deck.
+- (void)setCurrentCardsNumber:(int)numCardsOnDeck;
+
+/// Adds \c numOfCardsToAdd cards to the game's cards.
+- (NSArray<Card *> *)addCards:(int)numOfCardsToAdd;
 
 /// The current score of the game.
 @property (readonly, nonatomic) NSInteger score;
